@@ -20,21 +20,50 @@
   <body>
     <div class="wrapper flex justify-center text-gray-200">
       <div
-        class="hidden modal-container w-full h-full b-0 t-0 r-0 l-0 absolute bg-black bg-opacity-80 flex justify-center text-gray-200"
+        class="hidden modal-container z-10 flex w-full min-h-full b-0 t-0 r-0 l-0 absolute bg-black bg-opacity-90 flex justify-center text-gray-200"
+        id="modal-container"
       ></div>
       <div class="app p-8 m-16 lg:w-1/2">
         <h1 class="font-bold text-xl text-white">
           Harvard-Zitiergenerator nach "BKW-Standard"
         </h1>
         <div class="mainframe border-indigo-700 border-2 p-4">
-          <button
-            class="bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-10 rounded"
-          >
-            Neu
-          </button>
+          <div class="button-wrapper flex gap-2 justify-center flex-row">
+            <button
+              class="bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-10 rounded"
+              data-citation-type="book"
+            >
+              Buch
+            </button>
+
+            <button
+              class="bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-10 rounded"
+              data-citation-type="journal"
+            >
+              Zeitschrift
+            </button>
+          </div>
 
           <div id="overview"></div>
         </div>
+      </div>
+    </div>
+
+    <div
+      class="notice text-center w-full b-0 l-0 mx-auto px-10 text-gray-100 r-0 absolute"
+    >
+      <div class="text-center block mx-auto w-full lg:w-1/2">
+        <i>"Harvarder"</i> hat keine Verbindung zu jeglichen Verlägen oder
+        Autoren. Die Beispiele werden lediglich zur Demonstration genutzt.
+        Harvarder nimmt keine Haftung für die Korrektheit der Zitierweise.
+        Dieses Tool steht ausschließlich nur zu Bildungszwecken zur Verfügung.
+        Das Tool ist unter der MIT Lizenz quelloffen verfügbar auf
+        <a
+          rel="noopener"
+          class="text-indigo-400 hover:text-indigo-500"
+          href="https://github.com/angelobreuer/harvarder"
+          >GitHub</a
+        >.
       </div>
     </div>
 

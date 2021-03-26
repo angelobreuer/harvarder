@@ -1,17 +1,15 @@
 export function generateCitation(template, data) {
-    return template.replace(/{\w+}/, function (x) { return data[x]; });
+    return template.replace(/{\w+}/, x => data[x]);
 }
-var CitationRegistry = /** @class */ (function () {
-    function CitationRegistry() {
+export class CitationRegistry {
+    constructor() {
         this.registry = {};
     }
-    CitationRegistry.prototype.register = function (type, provider) {
+    register(type, provider) {
         return this.registry[type] = provider;
-    };
-    CitationRegistry.prototype.get = function (type) {
+    }
+    get(type) {
         return this.registry[type];
-    };
-    return CitationRegistry;
-}());
-export { CitationRegistry };
-export var Registry = new CitationRegistry();
+    }
+}
+export const Registry = new CitationRegistry();

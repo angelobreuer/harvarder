@@ -1,7 +1,6 @@
 import { ContributorInput } from "../inputs/ContributorInput.js";
-import { PublisherInput } from "../inputs/PublisherInput.js";
 import { Registry } from "./Citation.js";
-const BookCitationProvider = Registry.register('book', {
+const JournalCitationProvider = Registry.register('journal', {
     generate: (data, node) => {
         // first author
         if (data.contributors.length > 0) {
@@ -22,40 +21,43 @@ const BookCitationProvider = Registry.register('book', {
         if (data.subtitle && data.subtitle.length > 0) {
             title.append(`: ${data.subtitle} `);
         }
-        // edition
-        if (data.edition) {
-            node.append(`${data.edition}. Aufl., `);
+        node.append('in: ');
+        // name
+        const name = document.createElement('i');
+        name.append(data.name);
+        node.appendChild(name);
+        // volume
+        if (data.volume) {
+            node.append(`, Jg. ${data.volume}`);
         }
-        // publisher
-        if (data.publisher) {
-            if (data.publisher.location) {
-                // publisher with location
-                node.append(`${data.publisher.location}: ${data.publisher.name}`);
-            }
-            else {
-                // publisher without location
-                node.append(`${data.publisher.name}`);
-            }
+        // number
+        if (data.number) {
+            node.append(`, Nr. ${data.number}`);
         }
-        else {
-            node.append('o.H.');
+        // page range
+        if (data.range) {
+            node.append(`, S. ${data.range.start}`);
+            if (data.range.end) {
+                node.append(`-${data.range.end}`);
+            }
         }
         node.append('.');
     },
     getDefaultOptions: () => ({
-        title: 'Mutter Courage und ihre Kinder. Eine Chronik aus dem Dreißigjährigen Krieg.',
+        title: 'Allgemeinwissen: Wir brauchen einen neuen Kanon',
         contributors: [
             {
-                firstName: 'Bertolt',
-                lastName: 'Brecht',
+                firstName: 'Thomas',
+                lastName: 'Kerstan',
             }
         ],
         publishYear: 2018,
-        edition: 73,
-        publisher: {
-            name: 'Suhrkamp-Verlag',
-            location: 'Frankfurt am Main',
-        }
+        name: 'Die Zeit',
+        number: 34,
+        range: {
+            start: 1,
+        },
+        volume: 72,
     }),
     getModel: () => ({
         contributors: {
@@ -76,24 +78,36 @@ const BookCitationProvider = Registry.register('book', {
             description: 'Titel des Werks',
             required: true,
         },
-        edition: {
+        volume: {
             type: 'number',
             name: 'Auflage',
-            description: 'Die Auflage des Werkes.',
+            description: 'Die Bandnummer des Werkes.',
             required: false,
         },
-        publisher: {
-            type: PublisherInput,
-            name: 'Verlag/Herausgeber',
-            description: 'Der Verlag oder der Herausgeber des Werkes.',
-            required: false,
+        name: {
+            type: 'text',
+            name: 'Zeitschrift',
+            description: 'Offizieller Name der Zeitschrift',
+            required: true,
         },
         subtitle: {
             type: 'text',
             name: 'Untertitel',
             description: 'Untertitel des Werkes, falls vorhanden.',
             required: false,
+        },
+        number: {
+            type: "number",
+            name: 'Nummer',
+            description: 'Nummer der Ausgabe',
+            required: false,
+        },
+        range: {
+            type: 'text',
+            description: 'Der Seitenbereich in dem die zitieren Zeile(n) vorkommen.',
+            name: 'Seitenbereich',
+            required: false,
         }
     })
 });
-export default BookCitationProvider;
+export default JournalCitationProvider;

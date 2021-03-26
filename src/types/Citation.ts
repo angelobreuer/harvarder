@@ -1,9 +1,8 @@
-type CitationType = 'book'
+export type CitationType = 'book' | 'journal'
 
 export type InputType = 'text' | 'number' | {
-    render: (value: any) => {
+    render: (value: any, oninput: () => void) => {
         element: HTMLElement,
-        oninput: () => void,
         value: any,
     }
 }
@@ -11,6 +10,20 @@ export type InputType = 'text' | 'number' | {
 export interface BookCitation extends CitationData {
     subtitle?: string,
     edition?: number,
+    publisher?: Publisher,
+}
+
+export interface PageRange {
+    start: number,
+    end?: number,
+}
+
+export interface JournalCitation extends CitationData {
+    subtitle?: string,
+    volume?: number,
+    name: string,
+    number?: number,
+    range?: PageRange,
 }
 
 export interface Citation extends CitationData {
@@ -31,7 +44,6 @@ export interface CitationData {
     title: string,
     contributors: Contributor[],
     publishYear: number,
-    publisher?: Publisher,
 }
 
 

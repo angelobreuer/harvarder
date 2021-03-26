@@ -1,7 +1,7 @@
 import { ContributorInput } from "../inputs/ContributorInput.js";
 import { PublisherInput } from "../inputs/PublisherInput.js";
 import { Registry } from "./Citation.js";
-const BookCitationProvider = Registry.register('book', {
+const BookArticleCitationProvider = Registry.register('book', {
     generate: (data, node) => {
         // first author
         if (data.contributors.length > 0) {
@@ -96,4 +96,4 @@ const BookCitationProvider = Registry.register('book', {
         }
     })
 });
-export default BookCitationProvider;
+export default BookArticleCitationProvider;
