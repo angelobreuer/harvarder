@@ -28,19 +28,48 @@
           Harvard-Zitiergenerator nach "BKW-Standard"
         </h1>
         <div class="mainframe border-indigo-700 border-2 p-4">
-          <div class="button-wrapper flex gap-2 justify-center flex-row">
+          <div class="button-wrapper flex justify-center">
             <button
-              class="bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-10 rounded"
+              class="bg-indigo-800 m-3 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
               data-citation-type="book"
             >
               Buch
             </button>
 
             <button
-              class="bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-10 rounded"
+              class="bg-indigo-800 m-3 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
               data-citation-type="journal"
             >
               Zeitschrift
+            </button>
+
+            <button
+              class="bg-indigo-800 m-3 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
+              data-citation-type="book-article"
+            >
+              Buchartikel
+            </button>
+
+            <button
+              class="bg-indigo-800 m-3 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
+              data-citation-type="online-source"
+            >
+              Internetquelle
+            </button>
+          </div>
+          <div class="button-wrapper flex justify-center">
+            <button
+              class="bg-yellow-500 m-3 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
+              id="import-button"
+            >
+              Importieren
+            </button>
+
+            <button
+              class="bg-yellow-500 m-3 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-3 rounded"
+              id="export-button"
+            >
+              Exportieren
             </button>
           </div>
 

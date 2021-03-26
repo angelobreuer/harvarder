@@ -1,9 +1,8 @@
 import { PersonInput } from "../inputs/PersonInput.js"
-import { PublisherInput } from "../inputs/PublisherInput.js"
-import { BookCitation, generateCitation, Registry } from "./Citation.js"
+import { OnlineSourceCitation, Registry } from "./Citation.js"
 
-const BookCitationProvider = Registry.register('book', {
-    generate: (data: BookCitation, node: HTMLDivElement) => {
+const OnlineSourceCitationProvider = Registry.register('online-source', {
+    generate: (data: OnlineSourceCitation, node: HTMLDivElement) => {
         // first author
         if (data.contributors.length > 0) {
             const author = data.contributors[0]
@@ -28,40 +27,25 @@ const BookCitationProvider = Registry.register('book', {
             title.append(`: ${data.subtitle} `)
         }
 
-        // edition
-        if (data.edition) {
-            node.append(`${data.edition}. Aufl., `)
-        }
+        node.append(' [online] ')
+        node.append(data.uri)
 
-        // publisher
-        if (data.publisher) {
-            if (data.publisher.location) {
-                // publisher with location
-                node.append(`${data.publisher.location}: ${data.publisher.name}`)
-            } else {
-                // publisher without location
-                node.append(`${data.publisher.name}`)
-            }
-        } else {
-            node.append('o.H.')
-        }
+        const date = typeof data.date === 'object' ? data.date : new Date(data.date)
+        node.append(` [${date.toLocaleDateString()}]`)
 
         node.append('.')
     },
     getDefaultOptions: () => ({
-        title: 'Mutter Courage und ihre Kinder. Eine Chronik aus dem Dreißigjährigen Krieg.',
         contributors: [
             {
-                firstName: 'Bertolt',
-                lastName: 'Brecht',
+                firstName: 'Leonie',
+                lastName: 'Sontheimer',
             }
         ],
-        publishYear: 2018,
-        edition: 73,
-        publisher: {
-            name: 'Suhrkamp-Verlag',
-            location: 'Frankfurt am Main',
-        }
+        publishYear: 2019,
+        title: 'Wir rasen alle ohne Airbag durchs Netz',
+        uri: 'https://www.zeit.de/digital/datenschutz/2019-01/datenleck-internet-politiker-cyberkriminalitaet-datenschutz-interview/',
+        date: new Date(2020, 12, 7),
     }),
     getModel: () => ({
         contributors: {
@@ -82,25 +66,25 @@ const BookCitationProvider = Registry.register('book', {
             description: 'Titel des Werks',
             required: true,
         },
-        edition: {
-            type: 'number',
-            name: 'Auflage',
-            description: 'Die Auflage des Werkes.',
-            required: false,
-        },
-        publisher: {
-            type: PublisherInput,
-            name: 'Verlag/Herausgeber',
-            description: 'Der Verlag oder der Herausgeber des Werkes.',
-            required: false,
-        },
         subtitle: {
             type: 'text',
             name: 'Untertitel',
             description: 'Untertitel des Werkes, falls vorhanden.',
             required: false,
+        },
+        date: {
+            type: 'date',
+            name: 'Datum',
+            description: 'Das Datum an dem der Artikel zuletzt aus dem Internet abgerufen wurde.',
+            required: true,
+        },
+        uri: {
+            type: 'url',
+            name: 'URI',
+            description: 'Die URI des Artikels',
+            required: true,
         }
     })
 })
 
-export default BookCitationProvider
+export default OnlineSourceCitationProvider

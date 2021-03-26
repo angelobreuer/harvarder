@@ -1,7 +1,8 @@
 export const PersonInput = {
-    render: (value, oninput) => {
+    render: ({ value, oninput }) => {
         const element = document.createElement('div');
         const container = document.createElement('div');
+        value = value || [];
         const regenerate = () => {
             container.innerHTML = '';
             for (let contributor of value) {
@@ -45,7 +46,7 @@ export const PersonInput = {
         };
         const addButton = document.createElement('button');
         addButton.className = 'bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 mx-auto mt-3 px-10 rounded w-full';
-        addButton.textContent = 'Mitwirkende Person hinzufügen';
+        addButton.textContent = 'Person hinzufügen';
         addButton.onclick = () => {
             value.push({ firstName: '', lastName: '' });
             regenerate();

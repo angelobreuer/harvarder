@@ -31,18 +31,31 @@ export function createModal({ element, provider, onexit, onupdate, data, isNew }
         label.className = 'text-white';
         description.textContent = model.description;
         description.className = 'text-gray-400';
+        if (model.required) {
+            label.textContent += '*';
+        }
         if (typeof model.type === 'string') {
             input = document.createElement('input');
             input.type = model.type;
-            input.defaultValue = value;
             input.placeholder = value;
             input.className = 'text-gray-100 w-full my-2 border-2 border-gray-500 hover:border-indigo-600 px-4 py-1 rounded-md';
             input.style.backgroundColor = '#1F2022';
-            valueGetter = () => input.value;
+            valueGetter = () => model.type === 'date' ? input.valueAsDate : model.type === 'number' ? input.valueAsNumber : input.value;
+            if (!isNew) {
+                input.defaultValue = value;
+            }
+            if (model.type === 'date') {
+                input.valueAsDate = new Date();
+            }
         }
         else {
             const modelType = model.type;
-            const rendered = modelType.render(value, onInput);
+            const rendered = modelType.render({
+                required: model.required,
+                value: isNew ? undefined : value,
+                oninput: onInput,
+                placeholder: value
+            });
             input = rendered.element;
             valueGetter = () => rendered.value;
         }

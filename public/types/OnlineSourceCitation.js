@@ -1,7 +1,6 @@
-import { PageRangeInput } from "../inputs/PageRangeInput.js";
 import { PersonInput } from "../inputs/PersonInput.js";
 import { Registry } from "./Citation.js";
-const JournalCitationProvider = Registry.register('journal', {
+const OnlineSourceCitationProvider = Registry.register('online-source', {
     generate: (data, node) => {
         // first author
         if (data.contributors.length > 0) {
@@ -22,43 +21,23 @@ const JournalCitationProvider = Registry.register('journal', {
         if (data.subtitle && data.subtitle.length > 0) {
             title.append(`: ${data.subtitle} `);
         }
-        node.append('in: ');
-        // name
-        const name = document.createElement('i');
-        name.append(data.name);
-        node.appendChild(name);
-        // volume
-        if (data.volume) {
-            node.append(`, Jg. ${data.volume}`);
-        }
-        // number
-        if (data.number) {
-            node.append(`, Nr. ${data.number}`);
-        }
-        // page range
-        if (data.range) {
-            node.append(`, S. ${data.range.start}`);
-            if (data.range.end) {
-                node.append(`-${data.range.end}`);
-            }
-        }
+        node.append(' [online] ');
+        node.append(data.uri);
+        const date = typeof data.date === 'object' ? data.date : new Date(data.date);
+        node.append(` [${date.toLocaleDateString()}]`);
         node.append('.');
     },
     getDefaultOptions: () => ({
-        title: 'Allgemeinwissen: Wir brauchen einen neuen Kanon',
         contributors: [
             {
-                firstName: 'Thomas',
-                lastName: 'Kerstan',
+                firstName: 'Leonie',
+                lastName: 'Sontheimer',
             }
         ],
-        publishYear: 2018,
-        name: 'Die Zeit',
-        number: 34,
-        range: {
-            start: 1,
-        },
-        volume: 72,
+        publishYear: 2019,
+        title: 'Wir rasen alle ohne Airbag durchs Netz',
+        uri: 'https://www.zeit.de/digital/datenschutz/2019-01/datenleck-internet-politiker-cyberkriminalitaet-datenschutz-interview/',
+        date: new Date(2020, 12, 7),
     }),
     getModel: () => ({
         contributors: {
@@ -79,36 +58,24 @@ const JournalCitationProvider = Registry.register('journal', {
             description: 'Titel des Werks',
             required: true,
         },
-        volume: {
-            type: 'number',
-            name: 'Auflage',
-            description: 'Die Bandnummer des Werkes.',
-            required: false,
-        },
-        name: {
-            type: 'text',
-            name: 'Zeitschrift',
-            description: 'Offizieller Name der Zeitschrift',
-            required: true,
-        },
         subtitle: {
             type: 'text',
             name: 'Untertitel',
             description: 'Untertitel des Werkes, falls vorhanden.',
             required: false,
         },
-        number: {
-            type: "number",
-            name: 'Nummer',
-            description: 'Nummer der Ausgabe',
-            required: false,
+        date: {
+            type: 'date',
+            name: 'Datum',
+            description: 'Das Datum an dem der Artikel zuletzt aus dem Internet abgerufen wurde.',
+            required: true,
         },
-        range: {
-            type: PageRangeInput,
-            description: 'Der Seitenbereich in dem die zitieren Zeile(n) vorkommen.',
-            name: 'Seitenbereich',
-            required: false,
+        uri: {
+            type: 'url',
+            name: 'URI',
+            description: 'Die URI des Artikels',
+            required: true,
         }
     })
 });
-export default JournalCitationProvider;
+export default OnlineSourceCitationProvider;

@@ -1,4 +1,5 @@
-import { ContributorInput } from "../inputs/ContributorInput.js"
+import { PageRangeInput } from "../inputs/PageRangeInput.js"
+import { PersonInput } from "../inputs/PersonInput.js"
 import { JournalCitation, Registry } from "./Citation.js"
 
 const JournalCitationProvider = Registry.register('journal', {
@@ -11,7 +12,7 @@ const JournalCitationProvider = Registry.register('journal', {
 
         // secondary contributors
         data.contributors.slice(1).forEach(contributor => {
-            node.append(`/${contributor.firstName} ${contributor.lastName}`)
+            node.append(`, ${contributor.firstName} ${contributor.lastName}`)
         })
 
         // date
@@ -73,7 +74,7 @@ const JournalCitationProvider = Registry.register('journal', {
     }),
     getModel: () => ({
         contributors: {
-            type: ContributorInput,
+            type: PersonInput,
             name: 'Mitwirkende',
             description: 'Geben Sie hier die Personen an, die an dem Werk beteiligt waren. Der Autor wird als erste mitwirkende Person angegeben.',
             required: true,
@@ -115,7 +116,7 @@ const JournalCitationProvider = Registry.register('journal', {
             required: false,
         },
         range: {
-            type: 'text',
+            type: PageRangeInput,
             description: 'Der Seitenbereich in dem die zitieren Zeile(n) vorkommen.',
             name: 'Seitenbereich',
             required: false,

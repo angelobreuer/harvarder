@@ -1,4 +1,4 @@
-import { ContributorInput } from "../inputs/ContributorInput.js";
+import { PersonInput } from "../inputs/PersonInput.js";
 import { PublisherInput } from "../inputs/PublisherInput.js";
 import { Registry } from "./Citation.js";
 const BookCitationProvider = Registry.register('book', {
@@ -10,7 +10,7 @@ const BookCitationProvider = Registry.register('book', {
         }
         // secondary contributors
         data.contributors.slice(1).forEach(contributor => {
-            node.append(`/${contributor.firstName} ${contributor.lastName}`);
+            node.append(`, ${contributor.firstName} ${contributor.lastName}`);
         });
         // date
         node.append(` (${data.publishYear}): `);
@@ -59,7 +59,7 @@ const BookCitationProvider = Registry.register('book', {
     }),
     getModel: () => ({
         contributors: {
-            type: ContributorInput,
+            type: PersonInput,
             name: 'Mitwirkende',
             description: 'Geben Sie hier die Personen an, die an dem Werk beteiligt waren. Der Autor wird als erste mitwirkende Person angegeben.',
             required: true,

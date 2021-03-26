@@ -1,60 +1,71 @@
-import { PageRangeInput } from "../inputs/PageRangeInput.js";
-import { PersonInput } from "../inputs/PersonInput.js";
-import { PublisherInput } from "../inputs/PublisherInput.js";
-import { Registry } from "./Citation.js";
+import { PageRangeInput } from "../inputs/PageRangeInput.js"
+import { PersonInput } from "../inputs/PersonInput.js"
+import { PublisherInput } from "../inputs/PublisherInput.js"
+import { BookArticleCitation, Registry } from "./Citation.js"
+
 const BookArticleCitationProvider = Registry.register('book-article', {
-    generate: (data, node) => {
+    generate: (data: BookArticleCitation, node: HTMLDivElement) => {
         // first author
         if (data.contributors.length > 0) {
-            const author = data.contributors[0];
-            node.append(`${author.lastName}, ${author.firstName}`);
+            const author = data.contributors[0]
+            node.append(`${author.lastName}, ${author.firstName}`)
         }
+
         // secondary contributors
         data.contributors.slice(1).forEach(contributor => {
-            node.append(`, ${contributor.firstName} ${contributor.lastName}`);
-        });
+            node.append(`, ${contributor.firstName} ${contributor.lastName}`)
+        })
+
         // date
-        node.append(` (${data.publishYear}): `);
+        node.append(` (${data.publishYear}): `)
+
         // title
-        const title = document.createElement('i');
-        node.appendChild(title);
-        node.append(', ');
-        title.append(data.title);
+        const title = document.createElement('i')
+        node.appendChild(title)
+        node.append(', ')
+        title.append(data.title)
+
         if (data.subtitle && data.subtitle.length > 0) {
-            title.append(`: ${data.subtitle} `);
+            title.append(`: ${data.subtitle} `)
         }
+
         // publishers
         if (data.publishers && data.publishers.length) {
-            node.append('in: ');
+            node.append('in: ')
+
             node.append(data.publishers
                 .map(x => `${x.firstName} ${x.lastName}`)
-                .join(', '));
-            node.append(' (Hrsg.), ');
+                .join(', '))
+
+            node.append(' (Hrsg.), ')
+        } else {
+            node.append(' (o. H.)')
         }
-        else {
-            node.append(' (o. H.)');
-        }
+
         // edition
         if (data.edition) {
-            node.append(`${data.edition}. Aufl., `);
+            node.append(`${data.edition}. Aufl., `)
         }
+
         // publisher
         if (data.publishingCompany.location) {
             // publisher with location
-            node.append(`${data.publishingCompany.location}: ${data.publishingCompany.name}`);
-        }
-        else {
+            node.append(`${data.publishingCompany.location}: ${data.publishingCompany.name}`)
+        } else {
             // publisher without location
-            node.append(`${data.publishingCompany.name}`);
+            node.append(`${data.publishingCompany.name}`)
         }
+
         // page range
         if (data.range) {
-            node.append(`, S. ${data.range.start}`);
+            node.append(`, S. ${data.range.start}`)
+
             if (data.range.end) {
-                node.append(`-${data.range.end}`);
+                node.append(`-${data.range.end}`)
             }
         }
-        node.append('.');
+
+        node.append('.')
     },
     getDefaultOptions: () => ({
         publishYear: 2014,
@@ -146,5 +157,6 @@ const BookArticleCitationProvider = Registry.register('book-article', {
             required: true,
         }
     })
-});
-export default BookArticleCitationProvider;
+})
+
+export default BookArticleCitationProvider

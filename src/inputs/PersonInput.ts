@@ -1,9 +1,10 @@
-import { Contributor, InputType, Publisher } from "../types/Citation"
+import { InputType } from "../types/Citation"
 
-export const ContributorInput: InputType = {
-    render: (value: Contributor[], oninput: () => void) => {
+export const PersonInput: InputType = {
+    render: ({ value, oninput }) => {
         const element = document.createElement('div')
         const container = document.createElement('div')
+        value = value || []
 
         const regenerate = () => {
             container.innerHTML = ''
@@ -62,7 +63,7 @@ export const ContributorInput: InputType = {
 
         const addButton = document.createElement('button')
         addButton.className = 'bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-2 mx-auto mt-3 px-10 rounded w-full'
-        addButton.textContent = 'Mitwirkende Person hinzufügen'
+        addButton.textContent = 'Person hinzufügen'
 
         addButton.onclick = () => {
             value.push({ firstName: '', lastName: '' })

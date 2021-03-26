@@ -1,13 +1,18 @@
-import { InputType, Publisher } from "../types/Citation"
+import { InputType } from "../types/Citation"
 
 export const PublisherInput: InputType = {
-    render: (value: Publisher, oninput: () => void) => {
+    render: ({ value, oninput, required }) => {
         const element = document.createElement('div')
         const nameInput = document.createElement('input')
         const locationInput = document.createElement('input')
 
-        nameInput.defaultValue = value.name
-        locationInput.defaultValue = value.location
+        if (value) {
+            nameInput.defaultValue = value.name
+            locationInput.defaultValue = value.location
+        }
+
+        nameInput.required = required
+        locationInput.required = required
 
         element.appendChild(nameInput)
         element.appendChild(locationInput)

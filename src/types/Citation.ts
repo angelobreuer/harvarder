@@ -1,9 +1,16 @@
-export type CitationType = 'book' | 'journal'
+export type CitationType = 'book' | 'journal' | 'book-article' | 'online-source'
 
-export type InputType = 'text' | 'number' | {
-    render: (value: any, oninput: () => void) => {
+export type InputTypeProps<T = any> = {
+    value: T,
+    oninput: () => void,
+    placeholder: T,
+    required: boolean
+}
+
+export type InputType = 'text' | 'number' | 'date' | 'url' | {
+    render: (props: InputTypeProps) => {
         element: HTMLElement,
-        value: any,
+        value: any
     }
 }
 
@@ -11,6 +18,22 @@ export interface BookCitation extends CitationData {
     subtitle?: string,
     edition?: number,
     publisher?: Publisher,
+}
+
+export interface OnlineSourceCitation extends CitationData {
+    subtitle?: string,
+    writers?: Person[]
+    uri: string,
+    date: Date,
+}
+
+export interface BookArticleCitation extends CitationData {
+    subtitle?: string,
+    edition?: number,
+    publishers?: Person[],
+    publishingCompany: Publisher,
+    range?: PageRange,
+    name: string,
 }
 
 export interface PageRange {
@@ -30,7 +53,7 @@ export interface Citation extends CitationData {
     type: CitationType,
 }
 
-export interface Contributor {
+export interface Person {
     firstName: string,
     lastName: string,
 }
@@ -42,7 +65,7 @@ export interface Publisher {
 
 export interface CitationData {
     title: string,
-    contributors: Contributor[],
+    contributors: Person[],
     publishYear: number,
 }
 
