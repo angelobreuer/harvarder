@@ -4,8 +4,9 @@ export function getCitations() {
 }
 export function saveCitations(value) {
     localStorage.setItem('data', JSON.stringify(value));
+    Citations = value;
 }
-const Citations = getCitations();
+let Citations = getCitations();
 export default Citations;
 export function save() {
     saveCitations(Citations);

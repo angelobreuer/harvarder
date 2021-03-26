@@ -1,9 +1,12 @@
 import { Citation, CitationType, Registry } from "./types/Citation.js"
 import { createModal } from "./types/CitationModal.js"
-import Citations, { save } from "./Storage.js"
+import Citations, { save, saveCitations } from "./Storage.js"
 
 import './types/BookCitation.js'
 import './types/JournalCitation.js'
+import './types/BookArticleCitation.js'
+import './types/OnlineSourceCitation.js'
+import downloadAsJson from "./util/InlineDownloader.js"
 
 const modalContainer = document.getElementById('modal-container') as HTMLElement
 const overview = document.getElementById('overview') as HTMLElement
@@ -11,7 +14,7 @@ const overview = document.getElementById('overview') as HTMLElement
 function appendCitation(citation: Citation) {
     const div = document.createElement('div')
     overview.appendChild(div)
-    div.className = 'hover:bg-gray-100 hover:bg-opacity-10 shadow p-5 md-rounded'
+    div.className = 'hover:bg-gray-100 hover:bg-opacity-10 shadow p-5 md-rounded text-justify'
     const preview: CitationPreview = { data: citation, element: div, regenerate: undefined!, deleted: false }
 
     const regenerate = () => {
@@ -89,7 +92,7 @@ function edit(citation: CitationPreview) {
             } else if (type === 'delete') {
                 const index = Citations.indexOf(citation.data)
 
-                if (index) {
+                if (index >= 0) {
                     Citations.splice(index, 1)
                 } else {
                     alert('Interner Fehler beim Löschen des Zitats: Das Zitat wurde bereits im Speicher gelöscht.')
@@ -109,6 +112,59 @@ document.querySelectorAll('button[data-citation-type]').forEach(button => {
     buttonElement.onclick = () => create(button.getAttribute('data-citation-type') as CitationType)
 })
 
+document.getElementById('export-button')!.onclick = () => {
+    downloadAsJson('harvarder.json', JSON.stringify(Citations))
+}
+
+document.getElementById('import-button')!.onclick = () => {
+    const readFile = async (file: File) => {
+        const text = await file.text()
+
+        if (file.type !== 'application/json') {
+            throw 'Invalid mime type'
+        }
+
+        const json = JSON.parse(text)
+
+        if (!confirm('Achtung! Beim Laden einer neuen Datei werden jegliche Änderungen an Zitaten überschrieben. Wollen Sie wirklich fortfahren?')) {
+            return
+        }
+
+        saveCitations(json)
+        document.location.reload()
+    }
+
+    const input = document.createElement('input')
+    input.type = 'file'
+
+    input.onchange = () => {
+        if (!input.files || input.files.length !== 1) {
+            alert('Ungültige Eingabe.')
+            return
+        }
+
+        const file = input.files!.item(0)
+        readFile(file!).catch(() => alert('Ungültiger Dateiinhalt.'))
+    }
+
+    document.body.appendChild(input)
+    input.className = 'hidden'
+    input.click()
+    document.body.removeChild(input)
+}
+
+document.getElementById('delete-all-button')!.onclick = () => {
+    if (overview.innerHTML.length === 0) {
+        return
+    }
+
+    if (!confirm("Wollen Sie wirklich alle Einträge löschen?")) {
+        return
+    }
+
+    overview.innerHTML = ''
+    saveCitations([])
+}
 
 Citations.forEach(appendCitation)
 save()

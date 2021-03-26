@@ -7,9 +7,10 @@ export function getCitations(): Citation[] {
 
 export function saveCitations(value: Citation[]) {
     localStorage.setItem('data', JSON.stringify(value))
+    Citations = value
 }
 
-const Citations = getCitations()
+let Citations = getCitations()
 export default Citations
 
 export function save() {
