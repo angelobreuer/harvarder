@@ -7,6 +7,7 @@ import './types/JournalCitation.js'
 import './types/BookArticleCitation.js'
 import './types/OnlineSourceCitation.js'
 import downloadAsJson from "./util/InlineDownloader.js"
+import copyRichContentToClipboard from "./util/ClipboardHelper.js"
 
 const modalContainer = document.getElementById('modal-container') as HTMLElement
 const overview = document.getElementById('overview') as HTMLElement
@@ -164,6 +165,10 @@ document.getElementById('delete-all-button')!.onclick = () => {
 
     overview.innerHTML = ''
     saveCitations([])
+}
+
+document.getElementById('copy-button')!.onclick = () => {
+    copyRichContentToClipboard(overview)
 }
 
 Citations.forEach(appendCitation)
