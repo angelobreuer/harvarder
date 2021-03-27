@@ -48,6 +48,11 @@ const BookCitationProvider = Registry.register('book', {
 
         node.append('.')
     },
+    getEmptyOptions: () => ({
+        contributors: [],
+        publishYear: 0,
+        title: '',
+    }),
     getDefaultOptions: () => ({
         title: 'Mutter Courage und ihre Kinder. Eine Chronik aus dem Dreißigjährigen Krieg.',
         contributors: [
@@ -61,9 +66,22 @@ const BookCitationProvider = Registry.register('book', {
         publisher: {
             name: 'Suhrkamp-Verlag',
             location: 'Frankfurt am Main',
-        }
+        },
+        subtitle: ''
     }),
     getModel: () => ({
+        title: {
+            type: 'text',
+            name: 'Titel',
+            description: 'Titel des Werks',
+            required: true,
+        },
+        subtitle: {
+            type: 'text',
+            name: 'Untertitel',
+            description: 'Untertitel des Werkes, falls vorhanden.',
+            required: false,
+        },
         contributors: {
             type: PersonInput,
             name: 'Mitwirkende',
@@ -75,12 +93,6 @@ const BookCitationProvider = Registry.register('book', {
             name: 'Veröffentlichungsjahr',
             description: 'Das Jahr in dem das Werk veröffentlicht wurde.',
             required: false,
-        },
-        title: {
-            type: 'text',
-            name: 'Titel',
-            description: 'Titel des Werks',
-            required: true,
         },
         edition: {
             type: 'number',
@@ -94,12 +106,6 @@ const BookCitationProvider = Registry.register('book', {
             description: 'Der Verlag oder der Herausgeber des Werkes.',
             required: false,
         },
-        subtitle: {
-            type: 'text',
-            name: 'Untertitel',
-            description: 'Untertitel des Werkes, falls vorhanden.',
-            required: false,
-        }
     })
 })
 

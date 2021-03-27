@@ -35,6 +35,13 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
 
         node.append('.')
     },
+    getEmptyOptions: () => ({
+        contributors: [],
+        date: new Date(),
+        publishYear: 0,
+        title: '',
+        uri: ''
+    }),
     getDefaultOptions: () => ({
         contributors: [
             {
@@ -48,18 +55,6 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
         date: new Date(2020, 12, 7),
     }),
     getModel: () => ({
-        contributors: {
-            type: PersonInput,
-            name: 'Mitwirkende',
-            description: 'Geben Sie hier die Personen an, die an dem Werk beteiligt waren. Der Autor wird als erste mitwirkende Person angegeben.',
-            required: true,
-        },
-        publishYear: {
-            type: 'number',
-            name: 'Veröffentlichungsjahr',
-            description: 'Das Jahr in dem das Werk veröffentlicht wurde.',
-            required: false,
-        },
         title: {
             type: 'text',
             name: 'Titel',
@@ -72,10 +67,16 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
             description: 'Untertitel des Werkes, falls vorhanden.',
             required: false,
         },
-        date: {
-            type: 'date',
-            name: 'Datum',
-            description: 'Das Datum an dem der Artikel zuletzt aus dem Internet abgerufen wurde.',
+        publishYear: {
+            type: 'number',
+            name: 'Veröffentlichungsjahr',
+            description: 'Das Jahr in dem das Werk veröffentlicht wurde.',
+            required: false,
+        },
+        contributors: {
+            type: PersonInput,
+            name: 'Mitwirkende',
+            description: 'Geben Sie hier die Personen an, die an dem Werk beteiligt waren. Der Autor wird als erste mitwirkende Person angegeben.',
             required: true,
         },
         uri: {
@@ -83,7 +84,13 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
             name: 'URI',
             description: 'Die URI des Artikels',
             required: true,
-        }
+        },
+        date: {
+            type: 'date',
+            name: 'Datum',
+            description: 'Das Datum an dem der Artikel zuletzt aus dem Internet abgerufen wurde.',
+            required: true,
+        },
     })
 })
 

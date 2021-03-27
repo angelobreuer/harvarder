@@ -25,7 +25,7 @@ const JournalCitationProvider = Registry.register('journal', {
         title.append(data.title)
 
         if (data.subtitle && data.subtitle.length > 0) {
-            title.append(`: ${data.subtitle} `)
+            title.append(`: ${data.subtitle}`)
         }
 
         node.append('in: ')
@@ -56,6 +56,13 @@ const JournalCitationProvider = Registry.register('journal', {
 
         node.append('.')
     },
+    getEmptyOptions: () => ({
+        contributors: [],
+        name: '',
+        publishYear: 0,
+        title: '',
+        subtitle: ''
+    }),
     getDefaultOptions: () => ({
         title: 'Allgemeinwissen: Wir brauchen einen neuen Kanon',
         contributors: [
@@ -73,6 +80,18 @@ const JournalCitationProvider = Registry.register('journal', {
         volume: 72,
     }),
     getModel: () => ({
+        title: {
+            type: 'text',
+            name: 'Artikel',
+            description: 'Name des Artikels in der Zeitschrift',
+            required: true,
+        },
+        subtitle: {
+            type: 'text',
+            name: 'Untertitel',
+            description: 'Untertitel des Artikels, falls vorhanden.',
+            required: false,
+        },
         contributors: {
             type: PersonInput,
             name: 'Mitwirkende',
@@ -85,28 +104,16 @@ const JournalCitationProvider = Registry.register('journal', {
             description: 'Das Jahr in dem das Werk veröffentlicht wurde.',
             required: false,
         },
-        title: {
-            type: 'text',
-            name: 'Titel',
-            description: 'Titel des Werks',
-            required: true,
-        },
-        volume: {
-            type: 'number',
-            name: 'Auflage',
-            description: 'Die Bandnummer des Werkes.',
-            required: false,
-        },
         name: {
             type: 'text',
             name: 'Zeitschrift',
             description: 'Offizieller Name der Zeitschrift',
             required: true,
         },
-        subtitle: {
-            type: 'text',
-            name: 'Untertitel',
-            description: 'Untertitel des Werkes, falls vorhanden.',
+        volume: {
+            type: 'number',
+            name: 'Jahrgang',
+            description: 'Der Jahrgang der Zeitschrift.',
             required: false,
         },
         number: {

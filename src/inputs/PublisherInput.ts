@@ -1,10 +1,11 @@
 import { InputType } from "../types/Citation"
 
 export const PublisherInput: InputType = {
-    render: ({ value, oninput, required }) => {
+    render: ({ value, onInput, required }) => {
         const element = document.createElement('div')
         const nameInput = document.createElement('input')
         const locationInput = document.createElement('input')
+        value = value || { name: '', location: '' }
 
         if (value) {
             nameInput.defaultValue = value.name
@@ -25,13 +26,15 @@ export const PublisherInput: InputType = {
         locationInput.style.backgroundColor = '#1F2022'
 
         nameInput.oninput = () => {
+            value = value || {}
             value.name = nameInput.value || ''
-            oninput()
+            onInput(value)
         }
 
         locationInput.oninput = () => {
+            value = value || {}
             value.location = locationInput.value || ''
-            oninput()
+            onInput(value)
         }
 
         return { element, value }

@@ -39,7 +39,7 @@ const BookArticleCitationProvider = Registry.register('book-article', {
 
             node.append(' (Hrsg.), ')
         } else {
-            node.append(' (o. H.)')
+            node.append(' (o. H.) ')
         }
 
         // edition
@@ -101,11 +101,36 @@ const BookArticleCitationProvider = Registry.register('book-article', {
             end: 27,
         }
     }),
+    getEmptyOptions: () => ({
+        contributors: [],
+        name: '',
+        publishYear: 0,
+        publishingCompany: { location: '', name: '' },
+        title: '',
+    }),
     getModel: () => ({
+        title: {
+            type: 'text',
+            name: 'Titel',
+            description: 'Titel des Artikels',
+            required: true,
+        },
+        subtitle: {
+            type: 'text',
+            name: 'Untertitel',
+            description: 'Untertitel des Artikels, falls vorhanden.',
+            required: false,
+        },
         contributors: {
             type: PersonInput,
             name: 'Autoren',
             description: 'Geben Sie hier die Personen an, die an dem Werk beteiligt waren. Der Autor wird als erste mitwirkende Person angegeben.',
+            required: true,
+        },
+        name: {
+            type: 'text',
+            description: 'Vollständiger Titel der Publikation.',
+            name: 'Publikationstitel',
             required: true,
         },
         range: {
@@ -114,22 +139,16 @@ const BookArticleCitationProvider = Registry.register('book-article', {
             name: 'Seitenbereich',
             required: true,
         },
-        publishers: {
-            type: PersonInput,
-            name: 'Herausgeber',
-            description: 'Geben Sie hier die Personen an, die an der Herausgebung des Werkes beteiligt waren.',
-            required: true,
-        },
         publishYear: {
             type: 'number',
             name: 'Veröffentlichungsjahr',
             description: 'Das Jahr in dem das Werk veröffentlicht wurde.',
             required: false,
         },
-        title: {
-            type: 'text',
-            name: 'Titel',
-            description: 'Titel des Werks',
+        publishers: {
+            type: PersonInput,
+            name: 'Herausgeber',
+            description: 'Geben Sie hier die Personen an, die an der Herausgebung des Werkes beteiligt waren.',
             required: true,
         },
         edition: {
@@ -144,18 +163,6 @@ const BookArticleCitationProvider = Registry.register('book-article', {
             description: 'Der Verlag oder der Herausgeber des Werkes.',
             required: false,
         },
-        subtitle: {
-            type: 'text',
-            name: 'Untertitel',
-            description: 'Untertitel des Werkes, falls vorhanden.',
-            required: false,
-        },
-        name: {
-            type: 'text',
-            description: 'Vollständiger Titel der Publikation.',
-            name: 'Publikationstitel',
-            required: true,
-        }
     })
 })
 

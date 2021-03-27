@@ -2,17 +2,19 @@ export type CitationType = 'book' | 'journal' | 'book-article' | 'online-source'
 
 export type InputTypeProps<T = any> = {
     value: T,
-    oninput: () => void,
+    onInput: (value: T) => void,
     placeholder: T,
     required: boolean
 }
 
-export type InputType = 'text' | 'number' | 'date' | 'url' | {
+export interface CustomInput {
     render: (props: InputTypeProps) => {
         element: HTMLElement,
         value: any
     }
 }
+
+export type InputType = 'text' | 'number' | 'date' | 'url' | CustomInput
 
 export interface BookCitation extends CitationData {
     subtitle?: string,
@@ -69,17 +71,19 @@ export interface CitationData {
     publishYear: number,
 }
 
-
-type CitationProviderModel<T extends CitationData> = { [Property in keyof T]: {
+export interface CitationPropertyModel {
     name: string,
     description: string,
     required: boolean,
     type: InputType,
-} }
+}
+
+type CitationProviderModel<T extends CitationData> = { [Property in keyof T]: CitationPropertyModel }
 
 export interface CitationProvider<T extends CitationData> {
     generate(data: T, node: HTMLDivElement): void,
     getDefaultOptions(): T,
+    getEmptyOptions(): T,
     getModel(): CitationProviderModel<T>
 }
 

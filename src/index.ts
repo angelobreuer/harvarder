@@ -1,11 +1,12 @@
 import { Citation, CitationType, Registry } from "./types/Citation.js"
 import { createModal } from "./types/CitationModal.js"
-import Citations, { save, saveCitations } from "./Storage.js"
+import { saveCitations, getCitations } from "./Storage.js"
 
 import './types/BookCitation.js'
 import './types/JournalCitation.js'
 import './types/BookArticleCitation.js'
 import './types/OnlineSourceCitation.js'
+
 import downloadAsJson from "./util/InlineDownloader.js"
 import copyRichContentToClipboard from "./util/ClipboardHelper.js"
 
@@ -43,7 +44,7 @@ interface CitationPreview {
 function create(type: CitationType) {
     const wrapper = document.createElement('div')
     const div = document.createElement('div')
-    const data: Citation = { ...Registry.get(type).getDefaultOptions(), type }
+    const data: Citation = { type, ...Registry.get(type).getEmptyOptions() }
 
     wrapper.appendChild(div)
     modalContainer.appendChild(wrapper)
@@ -61,9 +62,10 @@ function create(type: CitationType) {
             modalContainer.innerHTML = ''
 
             if (type === 'save') {
-                Citations.push(data)
+                const citations = getCitations()
+                citations.push(data)
                 appendCitation(data)
-                save()
+                saveCitations(citations)
             }
         }
     })
@@ -91,16 +93,17 @@ function edit(citation: CitationPreview) {
             if (type === 'save') {
                 Object.assign(citation.data, shallowData)
             } else if (type === 'delete') {
-                const index = Citations.indexOf(citation.data)
+                const citations = getCitations()
+                const index = citations.indexOf(citation.data)
 
                 if (index >= 0) {
-                    Citations.splice(index, 1)
+                    citations.splice(index, 1)
                 } else {
                     alert('Interner Fehler beim Löschen des Zitats: Das Zitat wurde bereits im Speicher gelöscht.')
                 }
 
                 citation.deleted = true
-                save()
+                saveCitations(citations)
             }
 
             citation.regenerate()
@@ -114,7 +117,7 @@ document.querySelectorAll('button[data-citation-type]').forEach(button => {
 })
 
 document.getElementById('export-button')!.onclick = () => {
-    downloadAsJson('harvarder.json', JSON.stringify(Citations))
+    downloadAsJson('harvarder.json', JSON.stringify(getCitations()))
 }
 
 document.getElementById('import-button')!.onclick = () => {
@@ -171,5 +174,4 @@ document.getElementById('copy-button')!.onclick = () => {
     copyRichContentToClipboard(overview)
 }
 
-Citations.forEach(appendCitation)
-save()
+getCitations().forEach(appendCitation)

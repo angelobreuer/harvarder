@@ -1,7 +1,7 @@
 import { InputType } from "../types/Citation"
 
 export const PersonInput: InputType = {
-    render: ({ value, oninput }) => {
+    render: ({ value, onInput }) => {
         const element = document.createElement('div')
         const container = document.createElement('div')
         value = value || []
@@ -35,17 +35,17 @@ export const PersonInput: InputType = {
 
                     value.pop()
                     regenerate()
-                    oninput()
+                    onInput(value)
                 }
 
                 firstName.oninput = () => {
                     contributor.firstName = firstName.value
-                    oninput()
+                    onInput(value)
                 }
 
                 lastName.oninput = () => {
                     contributor.lastName = lastName.value
-                    oninput()
+                    onInput(value)
                 }
 
                 view.appendChild(firstName)
@@ -68,7 +68,7 @@ export const PersonInput: InputType = {
         addButton.onclick = () => {
             value.push({ firstName: '', lastName: '' })
             regenerate()
-            oninput()
+            onInput(value)
         }
 
         regenerate()

@@ -1,7 +1,7 @@
 import { InputType, InputTypeProps, PageRange } from "../types/Citation"
 
 export const PageRangeInput: InputType = {
-    render: ({ value, oninput, required, placeholder }: InputTypeProps<PageRange>) => {
+    render: ({ value, onInput, required, placeholder }: InputTypeProps<PageRange>) => {
         const element = document.createElement('div')
         const startInput = document.createElement('input')
         const endInput = document.createElement('input')
@@ -34,13 +34,15 @@ export const PageRangeInput: InputType = {
         endInput.style.backgroundColor = '#1F2022'
 
         startInput.oninput = () => {
+            value = value || {}
             value.start = startInput.valueAsNumber
-            oninput()
+            onInput(value)
         }
 
         endInput.oninput = () => {
+            value = value || {}
             value.end = endInput.valueAsNumber
-            oninput()
+            onInput(value)
         }
 
         return { element, value }
