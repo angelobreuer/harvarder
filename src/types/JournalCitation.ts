@@ -1,5 +1,6 @@
 import { PageRangeInput } from "../inputs/PageRangeInput.js"
 import { PersonInput } from "../inputs/PersonInput.js"
+import joinNotNull, { buildName } from "../util/StringHelper.js"
 import { JournalCitation, Registry } from "./Citation.js"
 
 const JournalCitationProvider = Registry.register('journal', {
@@ -7,12 +8,13 @@ const JournalCitationProvider = Registry.register('journal', {
         // first author
         if (data.contributors.length > 0) {
             const author = data.contributors[0]
-            node.append(`${author.lastName}, ${author.firstName}`)
+            node.append(buildName([author.lastName, author.firstName]))
         }
 
         // secondary contributors
         data.contributors.slice(1).forEach(contributor => {
-            node.append(`, ${contributor.firstName} ${contributor.lastName}`)
+            node.append(`, `)
+            node.append(joinNotNull(" ", [contributor.firstName, contributor.lastName]))
         })
 
         // date

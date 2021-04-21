@@ -1,4 +1,5 @@
 import { PersonInput } from "../inputs/PersonInput.js"
+import joinNotNull, { buildName } from "../util/StringHelper.js"
 import { OnlineSourceCitation, Registry } from "./Citation.js"
 
 const OnlineSourceCitationProvider = Registry.register('online-source', {
@@ -6,12 +7,13 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
         // first author
         if (data.contributors.length > 0) {
             const author = data.contributors[0]
-            node.append(`${author.lastName}, ${author.firstName}`)
+            node.append(buildName([author.lastName, author.firstName]))
         }
 
         // secondary contributors
         data.contributors.slice(1).forEach(contributor => {
-            node.append(`, ${contributor.firstName} ${contributor.lastName}`)
+            node.append(`, `)
+            node.append(joinNotNull(" ", [contributor.firstName, contributor.lastName]))
         })
 
         // date
