@@ -26,7 +26,7 @@ const OnlineSourceCitationProvider = Registry.register('online-source', {
         title.append(data.title)
 
         if (data.subtitle && data.subtitle.length > 0) {
-            title.append(`: ${data.subtitle} `)
+            title.append(`: ${data.subtitle}`)
         }
 
         node.append(' [online] ')
